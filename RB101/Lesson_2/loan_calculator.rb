@@ -1,5 +1,5 @@
 def prompt(message)
-	puts("=> #{message}")
+  puts("=> #{message}")
 end
 
 def percent_converter(x)
@@ -44,4 +44,4 @@ monthly_duation = duration_months(loan_duration) #find the duration in months
 
 monthly_payment = final_calculation(monthly_rate, monthly_duation, loan_amount)
 
-puts "Your monthly payment is #{monthly_payment}."
+puts "Your monthly payment is #{monthly_payment.round(2)}."
