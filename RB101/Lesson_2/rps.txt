@@ -1,0 +1,8 @@
+logic for RPS bonus
+
+          ROCK   Paper   Scissors   Spock   Lizard
+ROCK               L         W        L        W
+PAPER       W                L        W        L
+SCISSORS    L      W                  L        W
+SPOCK       W      L         W                 L 
+LIZARD      L      W         L        W       
