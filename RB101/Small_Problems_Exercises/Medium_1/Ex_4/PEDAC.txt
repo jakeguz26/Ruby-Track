@@ -1,0 +1,53 @@
+P- input: the total amount of swithces as well as the number of iterations. 
+   This will be an integer. Ex. 5
+   
+   output: this will be an array that shows which lights are ON after
+   the repetitions. Ex. [1, 4] (two lights on)
+
+  Explicit requirements: at each iteration, the light switches that are 
+  multiples of that `n` value will be TOGGLED. It could be on-to-off or off-to-on.
+
+  - though the only input is a single integer, we need to build an array that
+  has `n` elements from this single input. 
+
+  - IMPORTANT: the switches start OFF. and they are all OFF
+  
+  implicit- at each iteration, the previous value (ON or OFF) must be saved and then 
+  changed.  
+
+
+E-
+
+D- we are starting off with a single integer. This will be assigned
+to the local variable n. As stated above, from this `n`, we need to construct an array.
+
+- this array will consist of `n` elements. Perhaps we use ten `booleans`, and at end
+we convert to integers using index? 
+
+** 2nd idea, dictionarty with keys of integers and values of booleans. **
+
+- of course, the output will be an array object. 
+
+A-
+
+  - we will give an integer object to an initial method. This first method will build 
+  out the array object that will represent our 'light' switches. Perhaps we construct 
+  an array object with `n` booleans that are false?
+
+  - after we get our inisital array,  we have to iterate through `n` times, and 
+  only mutate the elements that are multiples of the current interation. 
+  
+  This wil be the parameter `cycle`. `cycle` 2 will FLIP/REVERSE the elements that are multiples
+  of 2. So mayube we ditch the boolean idea? Or maybe we do a dictionary of key/value?
+
+  - second method, will be reversing a boolean
+
+  Lastly, once we mutate `n` times, we simply return an array. 
+
+
+
+
+
+
+
+C-

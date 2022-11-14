@@ -1,0 +1,24 @@
+P- 
+  input: a string that contains multiple words
+  output: the second to last word in that string
+  
+  explcit: return a single string 
+          the input will ALWAYS have more than one word
+  implcit: spaces dont count, any character counts, including symbols or numbers
+
+E-
+  penultimate('last word') == 'last'
+  penultimate('Launch School is great!') == 'is'
+
+D- 
+  we will start with a string and the result will be a string, but in the middle...
+    # might want to consider saving the string as an array of string elements
+      - could possibly call the second to last *INDEX* from this array?
+
+A-
+  # first we call the method and pass the string to method as an argument
+  # inside of method, we can use #split to turn string into array
+  # we can then use index to call forward the index at the second to last position
+  # we return this result to OG method caller
+
+C

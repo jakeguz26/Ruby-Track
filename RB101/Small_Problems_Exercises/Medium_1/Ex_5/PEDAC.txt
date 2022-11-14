@@ -1,0 +1,32 @@
+P:
+
+input- a single, odd integer that will be assigned to the local variable `n`
+
+output- a printed, 4 pointed diamond
+        # this diamond will be `n` lines long, and the thickest point will be
+        `n` diamonds wide
+
+requirements
+
+  explicit: print the diamond. This will be some sort of constructed string.
+            # the length and width will both be `n`
+            # the first and last line will be the MIDDLE
+                $ the shape builds out
+
+  implicit: 
+
+D: 
+
+- we're gonna start with an integer. 
+- The `*` will be printed as a string. Maybe I build out an array that contains
+  all the `n`?
+E:
+
+A: 
+
+- 1. print the first line. The * will be located at the middle of `n`. If we are using
+  an array, this will be the middle index... If no array, we'll need a method
+  to calculate the space before and after. This space will be   
+  (`n` - current iteration) / 2. And this space will go on each side. 
+  2. repeat for each line. 
+  3. When we get to `n`, the middle, we'll need to reverse the process. 
