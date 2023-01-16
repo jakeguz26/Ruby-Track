@@ -1,17 +1,22 @@
 def letter_case_count(str)
-  lowercase = 0
-  uppercase = 0
-  neither = 0
-  str.chars.each do |x|
-    if x == x.downcase
-      lowercase += 1
+  lower_arr = []
+  upper_arr = []
+  other_arr = []
+  hash = {}
+  hash[:lowercase] = 0
+  hash[:uppercase] = 0
+  hash[:other] = 0
+  if str.chars.empty? == false
+    str.chars.each do |x|
+      if x == x.upcase
+        puts 'yes'
+      end
     end
+  else
+    p hash
   end
-  p lowercase
 end
 
 
 
-
-
-letter_case_count('ABCabc123')
+letter_case_count('abCdef 123') == { lowercase: 5, uppercase: 1, neither: 4 }

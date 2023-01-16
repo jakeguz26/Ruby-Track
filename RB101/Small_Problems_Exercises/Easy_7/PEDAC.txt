@@ -1,24 +1,32 @@
 P- 
-  input: a string that contains multiple words
-  output: the second to last word in that string
+  input: a single integer.
+  output: a single integer that is 2X the argument UNLESS..
+            ... unless the OG argument is a double number. In this case, return self
   
-  explcit: return a single string 
-          the input will ALWAYS have more than one word
-  implcit: spaces dont count, any character counts, including symbols or numbers
+  explicit: Check to see if number is double, if NOT, multiply by 2
+            - if it is, return self
+  implicit: dont account for negatives
 
-E-
-  penultimate('last word') == 'last'
-  penultimate('Launch School is great!') == 'is'
+E- 
 
-D- 
-  we will start with a string and the result will be a string, but in the middle...
-    # might want to consider saving the string as an array of string elements
-      - could possibly call the second to last *INDEX* from this array?
 
-A-
-  # first we call the method and pass the string to method as an argument
-  # inside of method, we can use #split to turn string into array
-  # we can then use index to call forward the index at the second to last position
-  # we return this result to OG method caller
+D-
+  we'll be starting and ending with a single integer. 
+  - however, we're gonna need to break up the integers in order to compare the first
+    half to second half. We're gonna need to send to array for this. 
+  - after we organize the individual elements into an array, we can convert back to 
+    int before we return
+
+A- 
+  # first step will be to determine the integer digit length
+    - we'll have to convert to strings and then check #length
+    - since the int MUST be even length, we'll use conditional flow to break out between
+      the evens and odds
+      => if the integer is an ODD length, we simply multiply and return
+      => if the integer is EVEN, we'll send to an abstracted method to determine
+          if a double is present.
+          # if double present (true) >>> we return the int as is
+          # else
+                double present (false) >>> we 2X the int and then return
 
 C

@@ -1,0 +1,33 @@
+P
+  - input: an integer which stands for the nth fib number we want to return
+  - output: the fib number corresponding to the nth place
+
+  RULES
+  - explicit: method must be recursive
+
+E
+
+D
+- we begin and end with an integer
+  # in the middle we'll just be doing mathmatics
+  # how do we break out?
+    - we can send each fib number to an array, and once the size of that array      
+      is == to the parameter, we break out
+
+A
+- def method and pass in the arugment which will be the 'nth' fib number
+  fib = [1, 1]
+  # if param is 1 or 2
+    return 1
+  # elsif param >= 3
+    parm.times do |x|
+      counter = 1
+      n + fib(x)
+    
+
+
+
+
+
+
+C
