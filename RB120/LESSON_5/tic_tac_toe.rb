@@ -39,6 +39,10 @@ class Board
     squares.collect(&:marker).count(TTTGame::COMPUTER_MARKER)
   end
 
+  def clear
+    system 'clear'
+  end
+
 
   def detect_winner
     WINNING_LINES.each do |lines|
@@ -105,8 +109,7 @@ class TTTGame
     puts "Thanks for playing Tic Tac Toe! Goodbye!"
   end
 
-  def display_board(clear = true)
-    system "clear" if clear
+  def display_board
     puts "You're a #{human.marker}. The computer is a #{computer.marker}"
     puts ""
     puts "     |     |"
@@ -123,6 +126,12 @@ class TTTGame
     puts "" 
   end
 
+  def clear_screen_and_display_board
+    board.clear
+    display_board
+  end
+
+
   def human_moves
     puts "Chose a square between (#{board.unmarked_keys.join(', ')}):"
     square = nil
@@ -132,7 +141,6 @@ class TTTGame
       puts "Sorry, that's not a valid choice"
     end
 
-  
     board.set_square_at(square, human.marker)
   end
 
@@ -166,9 +174,9 @@ class TTTGame
   
   def play
     display_welcome_message
-    system 'clear'
+    board.clear
     loop do
-      display_board(false)
+      clear_screen_and_display_board
 
       loop do
         human_moves   
@@ -185,7 +193,7 @@ class TTTGame
       break unless play_again?
       display_result
       board.reset
-      system 'clear'
+      board.clear
       puts "Let's play again!"
       puts ""
     end
