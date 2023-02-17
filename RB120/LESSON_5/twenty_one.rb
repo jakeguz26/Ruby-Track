@@ -1,10 +1,12 @@
-FACE_CARDS = ['jack', 'queen', 'king', 'ace']
+FACE_CARDS = ['jack', 'queen', 'king']
+ACE = 'ace'
 
 class Participant
-  attr_accessor :cards_in_hand, :move_choice
+  attr_accessor :cards_in_hand, :move_choice, :total_score
   
   def initialize
     @cards_in_hand = []
+    @total_score = 0
   end
 
   def hit
@@ -14,15 +16,53 @@ class Participant
   def stay
   end
 
-  def busted?(arr)
-    sum_arr = []
+  def face_card_conversion(arr) #iterate through elements and swap out face cards for the integer 10
+    arr_integers = []
     arr.each do |element|
       if FACE_CARDS.include?(element)
-        sum_arr << 10
+        arr_integers << 10
       else
-        sum_arr << element
+        arr_integers << element
       end
     end
+    return ace_conversion(arr_integers) if arr_integers.include?(ACE)
+    arr_integers
+  end
+
+  def integer?(element)
+    if (0..10).to_a.include?(element)
+      true
+    else
+      false
+    end
+    
+  end
+
+  def ace?(element)
+    if element == ACE
+      true
+    else
+      false
+    end
+  end
+  
+  def ace_conversion(arr)
+    arr_integers = arr.select { |x| integer?(x) } #arr of integer
+    arr_aces = arr.select { |y| ace?(y) } #arr of 'aces
+
+    arr_aces.size.times do |x|
+      if busted?(arr_integers) #if the current integers cause me to bust... 
+        arr_integers << 1
+      else
+        arr_integers << 11
+      end
+    end
+
+    arr_integers
+  end
+
+  def busted?(arr)
+    sum_arr = face_card_conversion(arr)
     sum_arr.sum > 21
   end
 
@@ -52,15 +92,15 @@ class Game
 
   def initial_deal
     2.times do |x|
-      current_card = pull_from_deck
-      player.cards_in_hand << current_card
-      current_card = pull_from_deck
-      dealer.cards_in_hand << current_card
+      current_card = pull_from_deck #pulls card and assigns to current card var
+      player.cards_in_hand << current_card #appends current card to player instance var
+      current_card = pull_from_deck #pulls card and assigns to current card var
+      dealer.cards_in_hand << current_card #appends current card to dealer instance var
     end
   end
 
   def pull_from_deck
-    pulled_card = deck_of_cards.sample
+    pulled_card = deck_of_cards.sample #pulls a random card from the instance var @deck of cards
     deck_of_cards.delete_at(deck_of_cards.index(pulled_card))
     pulled_card
   end
@@ -90,8 +130,12 @@ class Game
       case player.move_choice
       when 'hit'
         hit
-        p player.busted?(player.cards_in_hand)
+        if player.busted?(player.cards_in_hand)
+          puts "YOU BUSTED"
+          break
+        end
       when 'stay'
+        display_player_cards
         break
       end
     end
@@ -104,14 +148,18 @@ class Game
   end
 
   def display_player_cards
-    puts "You now have: #{player.cards_in_hand[0..-2].join(', ')}" + " and #{player.cards_in_hand[-1]}."
+    puts "You now have: #{player.cards_in_hand[0..-2].join(', ')}" + " and #{player.cards_in_hand[-1]}. Your total is: #{total_score(player.cards_in_hand)}"
+  end
+
+  def total_score(arr) #find the sum of the current hand
+    player.total_score = player.face_card_conversion(arr).sum #face card method will return an array of integers which can then be summed
   end
 
   def start
     initial_deal
     show_initial_cards
     player_turn
-    # dealer_turn
+    #dealer_turn
     # show_result
   end
 end
