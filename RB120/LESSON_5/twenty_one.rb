@@ -203,7 +203,6 @@ class Game
   def goodbye
     puts "Thanks for playing!"
   end
-
 end
 
 Game.new.start
