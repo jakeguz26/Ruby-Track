@@ -9,13 +9,6 @@ class Participant
     @total_score = 0
   end
 
-  def hit
-    pull_from_deck
-  end
-
-  def stay
-  end
-
   def face_card_conversion(arr) #iterate through elements and swap out face cards for the integer 10
     arr_integers = []
     arr.each do |element|
@@ -35,7 +28,6 @@ class Participant
     else
       false
     end
-    
   end
 
   def ace?(element)
@@ -130,12 +122,12 @@ class Game
         hit
         if player.busted?(player.cards_in_hand)
           puts "YOU BUSTED!"
-          break
+          return nil
         end
       when 'stay'
-        puts ""
+        system 'clear'
         display_player_cards
-        break
+        return true
       end
     end
   end
@@ -143,21 +135,31 @@ class Game
   def dealer_turn
     dealer.total_score = dealer.calculate_total_score(dealer.cards_in_hand)
     loop do  
-      if dealer.total_score < 21
-        dealer.cards_in_hand << pull_from_deck
+      if dealer.total_score < 17
+        dealer.cards_in_hand << pull_from_deck #dealer hits
+        dealer.total_score = dealer.calculate_total_score(dealer.cards_in_hand)
       else
-        break
+        break #dealer stays
       end
     end
-    if busted?(dealer.cards_in_hand)
+    display_dealer_cards
   end
 
   def show_result
-
+    if dealer.busted?(dealer.cards_in_hand)
+      puts "Dealer busts. You win!"
+    elsif player.total_score > dealer.total_score
+      puts "You win!"
+    elsif player.total_score < dealer.total_score
+      puts "Dealer wins!"
+    else
+      puts "TIE!"
+    end
   end
 
   def hit
     player.cards_in_hand << pull_from_deck
+    system 'clear'
     display_player_cards
     puts ""
   end
@@ -170,16 +172,38 @@ class Game
     puts "The dealer now has: #{dealer.cards_in_hand[0..-2].join(', ')}" + " and #{dealer.cards_in_hand[-1]}. Dealer total is: #{dealer.calculate_total_score(dealer.cards_in_hand)}"
   end
 
-  def start
-    initial_deal
-    show_initial_cards
-    player_turn
-    dealer_turn
-    puts ""
-    # puts player.total_score
-    # puts dealer.total_score
-    # show_result
+  def again?
+    puts "Would you like to play again? (Y or N)"
+    if gets.chomp.downcase == 'n'
+      return nil
+    else
+      system 'clear'
+      initialize
+    end
   end
+
+  def start
+    loop do
+      initial_deal
+      show_initial_cards
+      if player_turn == nil #add some functionality to stop gameplay if player busts here
+        break unless again? #again needs to evaluate to true
+      else
+        dealer_turn
+        puts ""
+        show_result # --> possible results are dealer bust + player win, dealer win, or tie
+        break unless again?
+      end
+    end
+    puts ""
+    system 'clear'
+    goodbye
+  end
+
+  def goodbye
+    puts "Thanks for playing!"
+  end
+
 end
 
 Game.new.start
