@@ -66,7 +66,8 @@ class Participant
     sum_arr.sum > 21
   end
 
-  def total
+  def calculate_total_score(arr) #find the sum of the current hand
+    self.total_score = face_card_conversion(arr).sum #face card method will return an array of integers which can then be summed
   end
 end
 
@@ -124,21 +125,35 @@ class Game
           puts ""
         end
       end
-      
-      player.move_choice = move_choice 
-
-      case player.move_choice
+      case move_choice
       when 'hit'
         hit
         if player.busted?(player.cards_in_hand)
-          puts "YOU BUSTED"
+          puts "YOU BUSTED!"
           break
         end
       when 'stay'
+        puts ""
         display_player_cards
         break
       end
     end
+  end
+
+  def dealer_turn
+    dealer.total_score = dealer.calculate_total_score(dealer.cards_in_hand)
+    loop do  
+      if dealer.total_score < 21
+        dealer.cards_in_hand << pull_from_deck
+      else
+        break
+      end
+    end
+    if busted?(dealer.cards_in_hand)
+  end
+
+  def show_result
+
   end
 
   def hit
@@ -148,18 +163,21 @@ class Game
   end
 
   def display_player_cards
-    puts "You now have: #{player.cards_in_hand[0..-2].join(', ')}" + " and #{player.cards_in_hand[-1]}. Your total is: #{total_score(player.cards_in_hand)}"
+    puts "You now have: #{player.cards_in_hand[0..-2].join(', ')}" + " and #{player.cards_in_hand[-1]}. Your total is: #{player.calculate_total_score(player.cards_in_hand)}"
   end
 
-  def total_score(arr) #find the sum of the current hand
-    player.total_score = player.face_card_conversion(arr).sum #face card method will return an array of integers which can then be summed
+  def display_dealer_cards
+    puts "The dealer now has: #{dealer.cards_in_hand[0..-2].join(', ')}" + " and #{dealer.cards_in_hand[-1]}. Dealer total is: #{dealer.calculate_total_score(dealer.cards_in_hand)}"
   end
 
   def start
     initial_deal
     show_initial_cards
     player_turn
-    #dealer_turn
+    dealer_turn
+    puts ""
+    # puts player.total_score
+    # puts dealer.total_score
     # show_result
   end
 end
