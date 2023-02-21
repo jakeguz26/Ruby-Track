@@ -1,68 +1,77 @@
+# enqueue --> initially fills spots in a row
+#         --> once this condition has been fulfilled, replace the oldest element
+#         --> swapped element gets counter reset 
+
+
+# dequeue --> deletes element with the highest counter state and returns
+
 class CircularQueue
-  attr_accessor :arr, :additive_index
+  attr_accessor :arr, :initial_index, :next_index
 
   def initialize(length)
     @arr = []
-    @additive_index = 0
+    @initial_index = 0
     length.times {|x| arr << QueuePositions.new }
-    initial_counters
+    @next_index = 0
   end
 
   def enqueue(element)
-    arr[additive_index].status = element
-    if @additive_index == (arr.size - 1)
-      @additive_index = 0
-    else
-      @additive_index += 1
-    end
+    self.initial_index = 0 if (arr.size == initial_index)
+    arr[initial_index].status = element
+    self.initial_index += 1
+    activate_counter
   end
 
-  # search for instance that has the highest @deletion_counter
+  # deletes instance that has highest counter state
+  # returns former element and replaces with nil
   def dequeue
-    counter_arr = []
-    returned_element = nil
-
-    arr.each { |instance| counter_arr << instance.deletion_counter } 
-    current_instance = arr[counter_arr.index(counter_arr.max)]
-
-    returned_element = current_instance
-
-    current_instance.reset_counter
-
-    returned_element.status
-    p counter_arr
+    return nil if all_nill?
+    returned_value = (arr[max_counter].status).clone # <-- returns current value
+    arr[max_counter].status = nil
+    returned_value
   end
 
-  def initial_counters
-    num = arr.size
+  # sort an array of counter values and returns max
+  def max_counter
+    counter_arr = []
     arr.each do |instance|
-      instance.deletion_counter += num
-      num -= 1
+      counter_arr << instance.counter
     end
+    counter_arr.index(counter_arr.max) #returns index of highest counter
+  end
+
+  # increments counter unless the object  =is nil
+  def activate_counter
+    arr.each do |instance|
+      instance.counter += 1 unless instance.starting_state == false
+    end
+  end
+
+  def all_nill?
+    temp_arr = []
+    arr.each { |instance| temp_arr << instance.status }
+    temp_arr.all?(nil)
   end
 end
 
 class QueuePositions
   attr_reader :status
-  attr_accessor :deletion_counter
+  attr_accessor :counter, :starting_state
   
   def initialize
     @status = nil
-    @deletion_counter = 0
+    @counter = 0
+    @starting_state = false
   end
 
-  # everytime the setter is invoked, deletion counter increments by 1
   def status=(element)
+    self.starting_state = true
     @status = element
-    #self.deletion_counter += 1
+    reset_counter
   end
 
   def reset_counter
-    self.deletion_counter = 0
-  end
-
-  def copy
-    self
+    self.counter = 0
   end
 end
 
@@ -74,34 +83,36 @@ queue.enqueue(2)
 
 puts queue.dequeue == 1
 
-# queue.enqueue(3)
-# queue.enqueue(4)
-# puts queue.dequeue == 2
+queue.enqueue(3)
+queue.enqueue(4)
 
-# queue.enqueue(5)
-# queue.enqueue(6)
-# queue.enqueue(7)
-# puts queue.dequeue == 5
-# puts queue.dequeue == 6
-# puts queue.dequeue == 7
-# puts queue.dequeue == nil
+puts queue.dequeue == 2
 
-# queue = CircularQueue.new(4)
-# puts queue.dequeue == nil
+queue.enqueue(5)
+queue.enqueue(6)
+queue.enqueue(7)
 
-# queue.enqueue(1)
-# queue.enqueue(2)
-# puts queue.dequeue == 1
+puts queue.dequeue == 5
+puts queue.dequeue == 6
+puts queue.dequeue == 7
+puts queue.dequeue == nil
 
-# queue.enqueue(3)
-# queue.enqueue(4)
-# puts queue.dequeue == 2
+queue = CircularQueue.new(4)
+puts queue.dequeue == nil
 
-# queue.enqueue(5)
-# queue.enqueue(6)
-# queue.enqueue(7)
-# puts queue.dequeue == 4
-# puts queue.dequeue == 5
-# puts queue.dequeue == 6
-# puts queue.dequeue == 7
-# puts queue.dequeue == nil
+queue.enqueue(1)
+queue.enqueue(2)
+puts queue.dequeue == 1
+
+queue.enqueue(3)
+queue.enqueue(4)
+puts queue.dequeue == 2
+
+queue.enqueue(5)
+queue.enqueue(6)
+queue.enqueue(7)
+puts queue.dequeue == 4
+puts queue.dequeue == 5
+puts queue.dequeue == 6
+puts queue.dequeue == 7
+puts queue.dequeue == nil
