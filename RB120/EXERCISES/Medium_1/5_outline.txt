@@ -1,0 +1,19 @@
+BUILLD A CLASS THAT REPRESENTS A NUMBER GUESSING GAME
+-----------------------------------------------------------
+- should only be one class
+
+STATES (instance variables)
+--------
+- selected number(must be between 1 and 100)
+- amount of guesses remaining 
+
+BEHAVIOR (instance methods)
+---------
+
+---------------------------- all should be wrapped in a play instance method
+- determine random number
+- alter remaining guesses
+- display info
+- receive player input
+- display result/hint
+- display final result
